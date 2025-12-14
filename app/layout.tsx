@@ -1,29 +1,48 @@
-import type { Metadata } from "next";
-// layout.tsx or layout.js
-import { Albert_Sans, Open_Sans, Rubik } from 'next/font/google';
-import './globals.css';
+import type React from "react"
+import type { Metadata } from "next"
+import { Geist, Geist_Mono } from "next/font/google"
+import { Analytics } from "@vercel/analytics/next"
+import { Toaster } from "sonner"
+import "./globals.css"
 
-const albertSans = Albert_Sans({ subsets: ['latin'] });
-const openSans = Open_Sans({ subsets: ['latin'] });
-const rubik = Rubik({ subsets: ['latin'] }); 
+const _geist = Geist({ subsets: ["latin"] })
+const _geistMono = Geist_Mono({ subsets: ["latin"] })
 
 export const metadata: Metadata = {
-  title: "CodeSage",
-  description: "My portfolio",
-};
+  title: "Alex R. Chen - Full Stack Developer Portfolio",
+  description: "Building immersive web experiences with modern technologies",
+  generator: "v0.app",
+  icons: {
+    icon: [
+      {
+        url: "/icon-light-32x32.png",
+        media: "(prefers-color-scheme: light)",
+      },
+      {
+        url: "/icon-dark-32x32.png",
+        media: "(prefers-color-scheme: dark)",
+      },
+      {
+        url: "/icon.svg",
+        type: "image/svg+xml",
+      },
+    ],
+    apple: "/apple-icon.png",
+  },
+}
 
 export default function RootLayout({
   children,
 }: Readonly<{
-  children: React.ReactNode;
+  children: React.ReactNode
 }>) {
   return (
     <html lang="en">
-      <body
-        className={`${albertSans.className} ${openSans.className} ${rubik.className} antialiased`}
-      >
+      <body className={`font-sans antialiased`}>
         {children}
+        <Toaster position="top-center" richColors />
+        <Analytics />
       </body>
     </html>
-  );
+  )
 }
