@@ -74,21 +74,21 @@ var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$sonner$2f$di
 ;
 ;
 const metadata = {
-    title: "Alex R. Chen - Full Stack Developer Portfolio",
+    title: "Codesage - Full Stack Developer Portfolio",
     description: "Building immersive web experiences with modern technologies",
     generator: "v0.app",
     icons: {
         icon: [
             {
-                url: "/icon-light-32x32.png",
+                url: "/professional-full-stack-developer-portrait--young-.jpg",
                 media: "(prefers-color-scheme: light)"
             },
             {
-                url: "/icon-dark-32x32.png",
+                url: "/professional-full-stack-developer-portrait--young-.jpg",
                 media: "(prefers-color-scheme: dark)"
             },
             {
-                url: "/icon.svg",
+                url: "/professional-full-stack-developer-portrait--young-.jpg",
                 type: "image/svg+xml"
             }
         ],

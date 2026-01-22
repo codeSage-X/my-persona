@@ -1,6 +1,7 @@
 "use client"
 
 import { Mail, Phone, Instagram, Linkedin } from "lucide-react"
+import { SiMedium } from "react-icons/si"
 
 export function Footer() {
   return (
@@ -18,7 +19,7 @@ export function Footer() {
               className="flex items-center gap-2 text-gray-300 hover:text-cyan-400 transition-colors"
             >
               <Mail className="w-5 h-5" />
-              <span className="text-sm">alex.chen@example.com</span>
+              <span className="text-sm">wisdomjohnikoi@gmail.com</span>
             </a>
 
             <a
@@ -26,12 +27,12 @@ export function Footer() {
               className="flex items-center gap-2 text-gray-300 hover:text-cyan-400 transition-colors"
             >
               <Phone className="w-5 h-5" />
-              <span className="text-sm">+1 (234) 567-890</span>
+              <span className="text-sm">+234 906 814 0123</span>
             </a>
 
             <div className="flex items-center gap-4 ml-4">
               <a
-                href="https://instagram.com/alexchen"
+                href="https://instagram.com/codeSageX"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-gray-300 hover:text-cyan-400 transition-colors"
@@ -40,7 +41,7 @@ export function Footer() {
               </a>
 
               <a
-                href="https://twitter.com/alexchen"
+                href="https://twitter.com/wisdom_ikoi"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-gray-300 hover:text-cyan-400 transition-colors"
@@ -51,19 +52,27 @@ export function Footer() {
               </a>
 
               <a
-                href="https://linkedin.com/in/alexchen"
+                href="https://www.linkedin.com/in/wisdom-john-ikoi-xenxei46/"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-gray-300 hover:text-cyan-400 transition-colors"
               >
                 <Linkedin className="w-5 h-5" />
               </a>
+              <a
+                href="https://medium.com/@wisdomjohnikoi"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-gray-300 hover:text-cyan-400 transition-colors"
+              >
+                <SiMedium className="w-5 h-5" />
+              </a>
             </div>
           </div>
         </div>
 
         <div className="mt-8 pt-6 border-t border-cyan-500/10 text-center">
-          <p className="text-gray-500 text-sm">© {new Date().getFullYear()} Alex Chen. All rights reserved.</p>
+          <p className="text-gray-500 text-sm">© {new Date().getFullYear()} codeSage. All rights reserved.</p>
         </div>
       </div>
     </footer>

@@ -71,7 +71,7 @@ const techIcons = [
     <section
       id="home"
       ref={containerRef}
-      className="relative min-h-screen flex items-center justify-center overflow-hidden"
+      className="header-fix relative h-[100vh] flex items-center justify-center overflow-hidden"
     >
       {/* Neural network background */}
       <div className="absolute inset-0 opacity-20">
@@ -104,14 +104,14 @@ const techIcons = [
           <img src="/professional-developer-portrait.png" alt="Wisdom Ikoi" className="w-full h-full object-cover" />
         </div>
 
-        <h1 className="text-6xl md:text-7xl font-bold mb-4 text-cyan-400 tracking-tight">FULL STACK DEVELOPER</h1>
-        <h2 className="text-4xl md:text-5xl font-bold mb-6">WISDOM IKOI</h2>
-        <p className="text-xl text-muted-foreground max-w-2xl mx-auto mb-8">
+        <h1 className="text-4xl md:text-7xl font-bold mb-4 text-cyan-400 tracking-tight">FULL STACK DEVELOPER</h1>
+        <h2 className="text-3xl md:text-5xl font-bold mb-6">WISDOM IKOI</h2>
+        <p className="text-lg text-muted-foreground max-w-2xl mx-auto mb-8">
           Building immersive web experiences with modern technologies.
         </p>
         <Button
           onClick={scrollToProjects}
-          className="bg-transparent border-2 border-cyan-400 text-cyan-400 hover:bg-cyan-400 hover:text-[#0a0e27] transition-all duration-300 px-8 py-6 text-lg rounded-full"
+          className="bg-transparent mb-10 border-2 border-cyan-400 text-cyan-400 hover:bg-cyan-400 hover:text-[#0a0e27] transition-all duration-300 px-6 py-5 text-lg rounded-full"
         >
           VIEW PROJECTS
         </Button>

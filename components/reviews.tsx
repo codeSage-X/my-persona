@@ -1,97 +1,155 @@
 "use client"
 
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { Card } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
-import { Plus, Star } from "lucide-react"
+import { Plus, Star, Linkedin } from "lucide-react" // Use Linkedin icon
 import { ReviewModal } from "@/components/review-modal"
 
+const PAGE_SIZE = 4
+
+// Mock reviews data
+let MOCK_REVIEWS: any[] = [
+  {
+    id: 1,
+    name: "Marta Jurkšaitienė",
+    company: "Director, Global Client Success and Operations @ Eskimi",
+    avatar: "/marta.png",
+    rating: 5,
+    text: "Had the pleasure of working with Wisdom in our Creative Studio, where he contributed to developing our rich media banners. He quickly became a reliable team member, proactive, curious, and always eager to learn. Wisdom brought great energy to every project, adapted fast to feedback, and delivered on time. He showed interest in AI and had several innovative projects using the skills. A promising developer with a bright future ahead!",
+    socials: {
+      linkedin: "https://www.linkedin.com/in/martajurksaitiene/",
+    },
+  },
+  {
+    id: 2,
+    name: "Babajide Awodire",
+    company: "Android Developer",
+    avatar: "/jide.png",
+    rating: 4,
+    text: "I had the pleasure of working with Wisdom at Vroom NG, where we collaborated on building a ride-hailing solution. Wisdom handled the web development side of things, and his technical skill, creativity, and attention to detail stood out from day one. He consistently delivered high-quality work, communicated effectively, and approached every challenge with a positive and solution-oriented mindset. Working with him made the entire development process smoother and more efficient. Wisdom is not only a talented developer but also a great team player who understands how to bring ideas to life. I strongly recommend him for any opportunity that values innovation, collaboration, and solid technical expertise.",
+    socials: {
+      linkedin: "https://www.linkedin.com/in/babajide-awodire-927b6215b/",
+    },
+  },
+]
+
 export function Reviews() {
+  const [reviews, setReviews] = useState<any[]>([])
+  const [loading, setLoading] = useState(true)
   const [showModal, setShowModal] = useState(false)
-  const [reviews, setReviews] = useState([
-    {
-      name: "Jane Smith",
-      company: "Tech Startup Inc.",
-      rating: 5,
-      text: "Working with [Developer] was an absolute pleasure. The web app they built for our startup is stunning and performs flawlessly. Their attention to detail and commitment to excellence is unmatched. Highly recommend! The project was completed well within the timeframe and communication was seamless.",
-      date: "October 25, 2023",
-      avatar: "/professional-woman-diverse.png",
-    },
-    {
-      name: "John Doe",
-      company: "Shopify Clone Ltd",
-      rating: 5,
-      text: "The developer delivered our e-commerce platform ahead of schedule and under budget. The code quality was exceptional, and they provided excellent support throughout the project. Their full stack expertise made them a valuable asset to our team. We look forward to working with them again.",
-      date: "November 12, 2023",
-      avatar: "/professional-man.jpg",
-    },
-    {
-      name: "Sarah Johnson",
-      company: "Business Solutions Co.",
-      rating: 5,
-      text: "Professional, efficient, and highly skilled. The developer's communication was excellent, and they always kept us updated on progress. The final product exceeded our expectations and has helped us scale our business significantly. A truly reliable partner.",
-      date: "December 3, 2023",
-      avatar: "/professional-woman-2.png",
-    },
-    {
-      name: "Michael Brown",
-      company: "Digital Agency",
-      rating: 5,
-      text: "Our experience with this developer was outstanding. Their deep knowledge of modern frameworks and problem-solving skills were impressive. They transformed our complex requirements into a user-friendly and robust application. We are thrilled with the results.",
-      date: "December 20, 2023",
-      avatar: "/professional-man-2.png",
-    },
-  ])
+  const [pageIndex, setPageIndex] = useState(0)
+
+  const totalPages = Math.ceil(MOCK_REVIEWS.length / PAGE_SIZE)
+
+  const fetchReviews = (page: number) => {
+    setLoading(true)
+    const start = page * PAGE_SIZE
+    const end = start + PAGE_SIZE
+    const pageData = MOCK_REVIEWS.slice(start, end)
+    setReviews(pageData)
+    setLoading(false)
+  }
+
+  useEffect(() => {
+    fetchReviews(pageIndex)
+  }, [pageIndex])
 
   return (
-    <section id="reviews" className="min-h-screen py-20 px-4 light:bg-white">
-      <div className="container mx-auto max-w-7xl">
-        <div className="text-center mb-16 relative">
-          <h2 className="text-5xl font-bold text-white light:text-gray-900 mb-4">What Clients Say</h2>
-          <p className="text-xl text-gray-400 light:text-gray-600">Hear From Our Happy Clients</p>
-          <Button
-            onClick={() => setShowModal(true)}
-            className="absolute top-0 right-4 md:right-0 bg-transparent hover:bg-cyan-400/10 text-cyan-400 border-2 border-cyan-400 px-6 py-6 flex items-center gap-2 shadow-[0_0_20px_rgba(34,211,238,0.4)] transition-all hover:shadow-[0_0_30px_rgba(34,211,238,0.6)]"
-          >
-            <Plus className="w-5 h-5" />
-            <span className="font-bold">Write a Review</span>
-          </Button>
+    <section className="min-h-screen py-20 px-4">
+      <div className="max-w-7xl mx-auto">
+
+        {/* Header */}
+        <div className="mb-16">
+          <div className="flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
+            <div className="text-center md:text-left">
+              <h2 className="text-5xl font-bold text-white">
+                Reviews From People I’ve Worked With
+              </h2>
+              <p className="text-gray-400 mt-2">
+                Real feedback from people I’ve worked with
+              </p>
+            </div>
+          </div>
         </div>
 
-        <div className="grid md:grid-cols-2 gap-6 mb-8">
-          {reviews.map((review, index) => (
-            <Card key={index} className="bg-[#1a1f3a] light:bg-white border-cyan-500/10 p-6 space-y-4">
-              <div className="flex items-start gap-4">
+        {/* Spinner */}
+        {loading && (
+          <div className="flex justify-center py-24">
+            <div className="h-10 w-10 animate-spin border-4 border-cyan-400 border-t-transparent rounded-full" />
+          </div>
+        )}
+
+        {/* Empty */}
+        {!loading && reviews.length === 0 && (
+          <div className="text-center py-24 text-gray-400">
+            No reviews yet
+          </div>
+        )}
+
+        {/* Reviews */}
+        <div className="grid md:grid-cols-2 gap-6">
+          {reviews.map(r => (
+            <Card key={r.id} className="bg-[#1a1f3a] p-6">
+              <div className="flex gap-4">
                 <img
-                  src={review.avatar || "/placeholder.svg"}
-                  alt={review.name}
-                  className="w-16 h-16 rounded-full object-cover border-2 border-cyan-400"
+                  src={r.avatar}
+                  className="w-14 h-14 rounded-full border border-cyan-400"
                 />
-                <div className="flex-1">
-                  <h3 className="text-lg font-bold text-white light:text-gray-900">{review.name}</h3>
-                  <p className="text-sm text-gray-400 light:text-gray-600">{review.company}</p>
+                <div className="flex-1 flex flex-col">
+                  <div className="flex items-center gap-2">
+                    <h3 className="text-white font-bold">{r.name}</h3>
+                    {r.socials?.linkedin && (
+                      <a
+                        href={r.socials.linkedin}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-cyan-400 hover:text-cyan-300"
+                        title="LinkedIn Profile"
+                      >
+                        <Linkedin className="w-5 h-5" />
+                      </a>
+                    )}
+                  </div>
+                  <p className="text-sm text-gray-400">{r.company}</p>
                 </div>
-                <div className="flex gap-1">
-                  {Array.from({ length: review.rating }).map((_, i) => (
-                    <Star key={i} className="w-5 h-5 fill-yellow-400 text-yellow-400" />
+                <div className="flex">
+                  {Array.from({ length: r.rating }).map((_, i) => (
+                    <Star key={i} className="w-4 h-4 fill-yellow-400 text-yellow-400" />
                   ))}
                 </div>
               </div>
-              <div className="relative">
-                <span className="text-6xl text-cyan-400/20 absolute -top-4 -left-2">"</span>
-                <p className="text-gray-300 light:text-gray-700 leading-relaxed pl-6">{review.text}</p>
-              </div>
-              <p className="text-sm text-gray-500 light:text-gray-500">{review.date}</p>
+
+              <p className="text-gray-300 mt-4">{r.text}</p>
             </Card>
           ))}
         </div>
 
-        <div className="text-center">
-          <Button className="bg-cyan-400 hover:bg-cyan-500 text-[#0a0e27] px-8">Load More</Button>
+        {/* Pagination */}
+        <div className="flex justify-center gap-4 mt-10">
+          <Button
+            disabled={pageIndex === 0}
+            onClick={() => setPageIndex(p => p - 1)}
+            variant="outline"
+          >
+            Previous
+          </Button>
+
+          <Button
+            disabled={pageIndex + 1 >= totalPages}
+            onClick={() => setPageIndex(p => p + 1)}
+            className="bg-cyan-400 text-[#0a0e27]"
+          >
+            Next
+          </Button>
         </div>
       </div>
 
-      <ReviewModal open={showModal} onClose={() => setShowModal(false)} onSubmit={setReviews} />
+      <ReviewModal
+        open={showModal}
+        onClose={() => setShowModal(false)}
+        onOptimisticAdd={(r) => setReviews(prev => [r, ...prev])}
+      />
     </section>
   )
 }

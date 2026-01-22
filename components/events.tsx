@@ -35,7 +35,7 @@ export function Events() {
   }
 
   return (
-    <section id="events" className="min-h-screen py-20 px-4">
+    <section id="events" className=" py-20 px-4">
       <div className="container mx-auto max-w-7xl">
         <div className="mb-12">
           <p className="text-cyan-400 text-lg mb-2">Community Building & Events -</p>

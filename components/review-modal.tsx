@@ -1,142 +1,193 @@
 "use client"
 
-import type React from "react"
-
 import { useState } from "react"
-import { X, Star } from "lucide-react"
+import { addDoc, collection, serverTimestamp } from "firebase/firestore"
+import { db } from "@/lib/firebase"
+import { uploadAvatar } from "@/lib/uploadAvatar"
+import { Card } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Textarea } from "@/components/ui/textarea"
-import { toast } from "sonner"
+import { Star, Camera, X } from "lucide-react"
 
-interface ReviewModalProps {
+type Props = {
   open: boolean
   onClose: () => void
-  onSubmit: (reviews: any) => void
+  onOptimisticAdd: (review: any) => void
 }
 
-export function ReviewModal({ open, onClose, onSubmit }: ReviewModalProps) {
+export function ReviewModal({ open, onClose, onOptimisticAdd }: Props) {
+  const [name, setName] = useState("")
+  const [role, setRole] = useState("")
   const [rating, setRating] = useState(0)
-  const [hoveredRating, setHoveredRating] = useState(0)
-  const [formData, setFormData] = useState({
-    firstName: "",
-    lastName: "",
-    role: "",
-    description: "",
-  })
+  const [text, setText] = useState("")
+  const [avatarFile, setAvatarFile] = useState<File | null>(null)
+  const [avatarPreview, setAvatarPreview] = useState<string | null>(null)
+  const [loading, setLoading] = useState(false)
 
   if (!open) return null
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
+  const isValid =
+    name.trim() &&
+    role.trim() &&
+    text.trim() &&
+    rating > 0
 
-    if (rating === 0) {
-      toast.error("Please select a rating")
-      return
+  const handleSubmit = async () => {
+    if (!isValid) return
+
+    setLoading(true)
+
+    const optimisticReview = {
+      id: `temp-${Date.now()}`,
+      name,
+      role,
+      rating,
+      text,
+      avatar: avatarPreview || "/placeholder-user.jpg",
+      date: new Date(),
     }
 
-    if (!formData.firstName || !formData.lastName || !formData.role || !formData.description) {
-      toast.error("Please fill in all fields")
-      return
-    }
-
-    // Here you would typically send to Firebase
-    // For now, we'll just show a success message
-    toast.success("Thank you for your review! It has been submitted.")
-
-    // Reset form
-    setFormData({
-      firstName: "",
-      lastName: "",
-      role: "",
-      description: "",
-    })
-    setRating(0)
+    onOptimisticAdd(optimisticReview)
     onClose()
+
+    try {
+      let avatarUrl = "/placeholder-user.jpg"
+      if (avatarFile) avatarUrl = await uploadAvatar(avatarFile)
+
+      await addDoc(collection(db, "reviews"), {
+        name,
+        role,
+        rating,
+        text,
+        avatar: avatarUrl,
+        date: serverTimestamp(),
+      })
+    } catch (e) {
+      console.error(e)
+    } finally {
+      setLoading(false)
+    }
   }
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-      <div className="fixed inset-0 bg-black/60 backdrop-blur-sm" onClick={onClose} />
-      <div className="relative bg-[#1a1f3a] light:bg-white rounded-2xl p-8 max-w-2xl w-full max-h-[90vh] overflow-y-auto border border-cyan-500/20">
-        <button
-          onClick={onClose}
-          className="absolute top-4 right-4 text-gray-400 hover:text-white light:hover:text-gray-900"
-        >
-          <X className="w-6 h-6" />
-        </button>
+    <div className="fixed inset-0 z-50 bg-black/70 flex items-center justify-center px-4">
+      <Card className="
+        w-full max-w-md
+        max-h-[90vh]
+        bg-[#0b1026]
+        border border-cyan-500/20
+        flex flex-col
+        overflow-hidden
+      ">
+        {/* Header */}
+        <div className="flex items-center justify-between px-6 py-4 border-b border-cyan-500/20">
+          <h3 className="text-xl font-bold text-white">Write a Review</h3>
+          <button onClick={onClose}>
+            <X className="w-5 h-5 text-gray-400 hover:text-white" />
+          </button>
+        </div>
 
-        <h2 className="text-3xl font-bold text-white light:text-gray-900 mb-6">Write a Review</h2>
+        {/* Scrollable Content */}
+        <div className="flex-1 overflow-y-auto px-6 py-6 space-y-5">
 
-        <form onSubmit={handleSubmit} className="space-y-6">
-          <div className="grid md:grid-cols-2 gap-4">
-            <div>
-              <label className="block text-sm font-medium text-gray-300 light:text-gray-700 mb-2">First Name</label>
-              <Input
-                value={formData.firstName}
-                onChange={(e) => setFormData({ ...formData, firstName: e.target.value })}
-                className="bg-[#0a0e27] light:bg-gray-50 border-cyan-500/20 text-white light:text-gray-900"
-                placeholder="John"
+          {/* Avatar Picker */}
+          <div className="flex justify-center">
+            <label className="relative cursor-pointer group">
+              <img
+                src={avatarPreview || "/placeholder-user.jpg"}
+                className="w-24 h-24 rounded-full object-cover border-2 border-cyan-400"
               />
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-300 light:text-gray-700 mb-2">Last Name</label>
-              <Input
-                value={formData.lastName}
-                onChange={(e) => setFormData({ ...formData, lastName: e.target.value })}
-                className="bg-[#0a0e27] light:bg-gray-50 border-cyan-500/20 text-white light:text-gray-900"
-                placeholder="Doe"
+              <div className="absolute inset-0 bg-black/50 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition">
+                <Camera className="w-6 h-6 text-white" />
+              </div>
+              <input
+                type="file"
+                accept="image/*"
+                className="hidden"
+                onChange={(e) => {
+                  const file = e.target.files?.[0]
+                  if (!file) return
+                  setAvatarFile(file)
+                  setAvatarPreview(URL.createObjectURL(file))
+                }}
               />
-            </div>
+            </label>
           </div>
 
+          {/* Name */}
           <div>
-            <label className="block text-sm font-medium text-gray-300 light:text-gray-700 mb-2">Role</label>
-            <Input
-              value={formData.role}
-              onChange={(e) => setFormData({ ...formData, role: e.target.value })}
-              className="bg-[#0a0e27] light:bg-gray-50 border-cyan-500/20 text-white light:text-gray-900"
-              placeholder="CEO at Company"
+            <label className="text-sm text-gray-400">Full name</label>
+            <input
+              required
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              className="mt-1 w-full rounded-md bg-[#131a3a] px-4 py-3 text-white border border-cyan-500/20 focus:border-cyan-400 outline-none"
+              placeholder="John Doe"
             />
           </div>
 
+          {/* Role */}
           <div>
-            <label className="block text-sm font-medium text-gray-300 light:text-gray-700 mb-2">Rating</label>
-            <div className="flex gap-2">
-              {[1, 2, 3, 4, 5].map((star) => (
-                <button
-                  key={star}
-                  type="button"
-                  onMouseEnter={() => setHoveredRating(star)}
-                  onMouseLeave={() => setHoveredRating(0)}
-                  onClick={() => setRating(star)}
-                  className="transition-transform hover:scale-110"
-                >
-                  <Star
-                    className={`w-8 h-8 ${
-                      star <= (hoveredRating || rating) ? "fill-yellow-400 text-yellow-400" : "text-gray-600"
-                    }`}
-                  />
-                </button>
+            <label className="text-sm text-gray-400">Your Role</label>
+            <input
+              required
+              value={role}
+              onChange={(e) => setRole(e.target.value)}
+              className="mt-1 w-full rounded-md bg-[#131a3a] px-4 py-3 text-white border border-cyan-500/20 focus:border-cyan-400 outline-none"
+              placeholder="Startup Inc"
+            />
+          </div>
+
+          {/* Rating */}
+          <div>
+            <label className="text-sm text-gray-400 block mb-2">Rating</label>
+            <div className="flex justify-center gap-2">
+              {[1, 2, 3, 4, 5].map(n => (
+                <Star
+                  key={n}
+                  onClick={() => setRating(n)}
+                  className={`w-7 h-7 cursor-pointer transition ${
+                    rating >= n
+                      ? "fill-yellow-400 text-yellow-400"
+                      : "text-gray-500"
+                  }`}
+                />
               ))}
             </div>
           </div>
 
+          {/* Review */}
           <div>
-            <label className="block text-sm font-medium text-gray-300 light:text-gray-700 mb-2">Description</label>
-            <Textarea
-              value={formData.description}
-              onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-              className="bg-[#0a0e27] light:bg-gray-50 border-cyan-500/20 text-white light:text-gray-900 min-h-32"
-              placeholder="Tell us about your experience..."
+            <label className="text-sm text-gray-400">Review</label>
+            <textarea
+              required
+              rows={4}
+              value={text}
+              onChange={(e) => setText(e.target.value)}
+              className="mt-1 w-full rounded-md bg-[#131a3a] px-4 py-3 text-white border border-cyan-500/20 focus:border-cyan-400 outline-none resize-none"
+              placeholder="Share your experience..."
             />
           </div>
+        </div>
 
-          <Button type="submit" className="w-full bg-cyan-400 hover:bg-cyan-500 text-[#0a0e27]">
-            Submit Review
+        {/* Sticky Footer */}
+        <div className="px-6 py-4 border-t border-cyan-500/20 flex gap-3">
+          <Button
+            onClick={onClose}
+            variant="outline"
+            className="w-[50%] border-cyan-400 text-cyan-400"
+          >
+            Cancel
           </Button>
-        </form>
-      </div>
+
+          <Button
+            onClick={handleSubmit}
+            disabled={!isValid || loading}
+            className="w-[50%] bg-cyan-400 text-[#0a0e27] hover:bg-cyan-500"
+          >
+            {loading ? "Submitting..." : "Submit"}
+          </Button>
+        </div>
+      </Card>
     </div>
   )
 }

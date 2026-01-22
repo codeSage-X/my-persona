@@ -22,11 +22,11 @@ export function About() {
   const skillsRef = useRef<(HTMLDivElement | null)[]>([])
 
   const skills = [
-    { name: "JavaScript", level: 100 },
-    { name: "React", level: 95 },
-    { name: "Node.js", level: 90 },
-    { name: "MongoDB", level: 85 },
-    { name: "PHP", level: 80 },
+    { name: "JavaScript & Typescript", level: 100 },
+    { name: "React & Next.JS", level: 95 },
+    { name: "Node.js & MongoDB", level: 90 },
+    { name: "Gsap & Three.js", level: 85 },
+    { name: "PHP & Laravel", level: 70 },
   ]
 
  const techStack = [
@@ -94,7 +94,7 @@ export function About() {
             {/* Bio */}
             <div className="space-y-4 text-muted-foreground leading-relaxed">
               <p>
-                With over five years of experience in software development, I am a passionate and dedicated full stack
+                With over 6 years of experience in software development, I am a passionate and dedicated full stack
                 developer specializing in building seamless digital experiences from front-end interfaces to back-end
                 architecture. I began my journey with a curiosity for coding, evolving into a career where I craft
                 seamless digital experiences from front-end interfaces to back-end architecture.
