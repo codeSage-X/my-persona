@@ -8,7 +8,7 @@
   "static/chunks/node_modules_react-icons_lib_844c6c50._.js",
   "static/chunks/node_modules_@firebase_firestore_dist_5fba790c._.js",
   "static/chunks/node_modules_@firebase_storage_dist_index_esm_00d833a2.js",
-  "static/chunks/node_modules_9eabf796._.js"
+  "static/chunks/node_modules_4df59e88._.js"
 ],
     source: "dynamic"
 });

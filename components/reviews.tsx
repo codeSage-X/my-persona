@@ -32,6 +32,17 @@ let MOCK_REVIEWS: any[] = [
       linkedin: "https://www.linkedin.com/in/babajide-awodire-927b6215b/",
     },
   },
+  {
+    id: 3,
+    name: "Chibuzo Madumere",
+    company: "Front-end Rich Media Developer @ Eskimi",
+    avatar: "/venaz.png",
+    rating: 5,
+    text: "I worked with Wisdom as a teammate and highly recommend him. He is a strong fullstack web and mobile developer with excellent problem solving skills, fast delivery, and a high level of reliability. He communicates clearly, takes ownership of his tasks, and is a pleasure to work with. A great asset to any team.",
+    socials: {
+      linkedin: "https://www.linkedin.com/in/babajide-awodire-927b6215b/",
+    },
+  },
 ]
 
 export function Reviews() {

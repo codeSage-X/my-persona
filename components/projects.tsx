@@ -2,7 +2,7 @@
 
 import { Card } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
-import { SiJavascript, SiNextdotjs, SiMongodb, SiReact, SiThreedotjs, SiNodedotjs, SiGreensock, SiExpo } from "react-icons/si"
+import { SiJavascript, SiNextdotjs, SiMongodb, SiReact, SiThreedotjs, SiNodedotjs, SiGreensock, SiExpo, SiOpenai } from "react-icons/si"
 import { JSX } from "react"
 
 
@@ -24,7 +24,7 @@ const projects = [
       "Your all-in-one platform for mentorship, training, and building impactful communities.",
     image: "/mently.png",
     tech: ["react", "next"],
-    link: "https:mymently.com",
+    link: "https://mymently.com/",
     embedLink: "",
     appType: "web",
   },
@@ -68,6 +68,16 @@ const projects = [
     embedLink: "",
     appType: "mobile",
   },
+  {
+    title: "Metro Clinic AI",
+    description:
+      "A healthcare platform integrating AI for enhanced patient care and management.",
+    image: "/metro.png",
+    tech: [ "next", "deepseek"],
+    link: "https://metro-care-red.vercel.app/.",
+    embedLink: "",
+    appType: "web",
+  },
 
 ]
 
@@ -80,6 +90,7 @@ const techIcons: Record<string, JSX.Element> = {
   node: <SiNodedotjs className="text-green-600 w-5 h-5" />,
   gsap: <SiGreensock className="text-green-400 w-5 h-5" />,
   expo: <SiExpo className="text-black w-5 h-5" />,
+  deepseek: <SiOpenai className="text-green-400 w-5 h-5" />,
 }
 
 

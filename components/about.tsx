@@ -3,6 +3,7 @@
 import { useEffect, useRef } from "react"
 import { gsap } from "gsap"
 import { ScrollTrigger } from "gsap/ScrollTrigger"
+import { SiAngular, SiDocker, SiGreensock, SiJavascript, SiMongodb, SiNextdotjs, SiNodedotjs, SiPhp, SiPostman, SiThreedotjs, SiTypescript } from "react-icons/si"
 
 import {
   Globe,
@@ -26,19 +27,29 @@ export function About() {
     { name: "React & Next.JS", level: 95 },
     { name: "Node.js & MongoDB", level: 90 },
     { name: "Gsap & Three.js", level: 85 },
-    { name: "PHP & Laravel", level: 70 },
+    { name: "PHP & Laravel", level: 74 },
+    { name: "AI & Automation", level: 78 },
+    { name: "Vibe Coding & Prompting", level: 96 },
+    { name: "Advocacy & Team Leading ", level: 94 },
+    { name: "Technical Writing & API Documentation ", level: 90 },
+    { name: "Angular ", level: 95 },
   ]
 
  const techStack = [
-  { name: "HTML", Icon: Globe },
-  { name: "CSS", Icon: Palette },
-  { name: "JavaScript", Icon: Zap },
+  { name: "TypeScript", Icon: SiTypescript },
+  { name: "Gsap", Icon: SiGreensock },
+  { name: "JavaScript", Icon: SiJavascript },
   { name: "React", Icon: Atom },
-  { name: "Node.js", Icon: Server },
-  { name: "MongoDB", Icon: Database },
-  { name: "Express", Icon: Rocket },
-  { name: "PHP", Icon: Code },
-  { name: "REST API", Icon: Code },
+  { name: "Node.js", Icon: SiNodedotjs },
+  { name: "MongoDB", Icon: SiMongodb },
+  { name: "Three.js", Icon: SiThreedotjs },
+  { name: "PHP", Icon: SiPhp },
+  { name: "REST API", Icon: SiPostman },
+  { name: "Next.js", Icon: SiNextdotjs },
+  { name: "Angular", Icon: SiAngular },
+  { name: "Docker", Icon: SiDocker },
+
+
 ]
 
   useEffect(() => {
