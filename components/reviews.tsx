@@ -3,12 +3,11 @@
 import { useEffect, useState } from "react"
 import { Card } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
-import { Plus, Star, Linkedin } from "lucide-react" // Use Linkedin icon
+import { Star, Linkedin } from "lucide-react"
 import { ReviewModal } from "@/components/review-modal"
 
 const PAGE_SIZE = 4
 
-// Mock reviews data
 let MOCK_REVIEWS: any[] = [
   {
     id: 1,
@@ -49,7 +48,7 @@ let MOCK_REVIEWS: any[] = [
     company: "Creative Project Manager @ Eskimi",
     avatar: "/kas.png",
     rating: 5,
-    text: "What stands out most about Wisdom is his attitude and determination. He works incredibly hard to improve his coding skills and never backs down from a tough problem. He is a resilient professional who brings 100% effort to the table every day. Was an absolute pleasure to have him on the team! ",
+    text: "What stands out most about Wisdom is his attitude and determination. He works incredibly hard to improve his coding skills and never backs down from a tough problem. He is a resilient professional who brings 100% effort to the table every day. Was an absolute pleasure to have him on the team!",
     socials: {
       linkedin: "https://www.linkedin.com/in/kasper-apsega-417196228/",
     },
@@ -68,8 +67,7 @@ export function Reviews() {
     setLoading(true)
     const start = page * PAGE_SIZE
     const end = start + PAGE_SIZE
-    const pageData = MOCK_REVIEWS.slice(start, end)
-    setReviews(pageData)
+    setReviews(MOCK_REVIEWS.slice(start, end))
     setLoading(false)
   }
 
@@ -82,20 +80,16 @@ export function Reviews() {
       <div className="max-w-7xl mx-auto">
 
         {/* Header */}
-        <div className="mb-16">
-          <div className="flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
-            <div className="text-center md:text-left">
-              <h2 className="text-5xl font-bold text-white">
-                Reviews From People I’ve Worked With
-              </h2>
-              <p className="text-gray-400 mt-2">
-                Real feedback from people I’ve worked with
-              </p>
-            </div>
-          </div>
+        <div className="mb-16 text-center md:text-left">
+          <h2 className="text-5xl font-bold text-white">
+            Reviews From People I’ve Worked With
+          </h2>
+          <p className="text-gray-400 mt-2">
+            Real feedback from people I’ve worked with
+          </p>
         </div>
 
-        {/* Spinner */}
+        {/* Loading */}
         {loading && (
           <div className="flex justify-center py-24">
             <div className="h-10 w-10 animate-spin border-4 border-cyan-400 border-t-transparent rounded-full" />
@@ -109,40 +103,60 @@ export function Reviews() {
           </div>
         )}
 
-        {/* Reviews */}
+        {/* Reviews Grid */}
         <div className="grid md:grid-cols-2 gap-6">
           {reviews.map(r => (
-            <Card key={r.id} className="bg-[#1a1f3a] p-6">
-              <div className="flex gap-4">
-                <img
-                  src={r.avatar}
-                  className="w-14 h-14 rounded-full border border-cyan-400"
-                />
-                <div className="flex-1 flex flex-col">
-                  <div className="flex items-center gap-2">
-                    <h3 className="text-white font-bold">{r.name}</h3>
-                    {r.socials?.linkedin && (
-                      <a
-                        href={r.socials.linkedin}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="text-cyan-400 hover:text-cyan-300"
-                        title="LinkedIn Profile"
-                      >
-                        <Linkedin className="w-5 h-5" />
-                      </a>
-                    )}
-                  </div>
-                  <p className="text-sm text-gray-400">{r.company}</p>
-                </div>
-                <div className="flex">
-                  {Array.from({ length: r.rating }).map((_, i) => (
-                    <Star key={i} className="w-4 h-4 fill-yellow-400 text-yellow-400" />
-                  ))}
-                </div>
-              </div>
+            <Card
+              key={r.id}
+              className="
+                bg-[#1a1f3a]
+                p-6
+                h-[260px]
+                flex
+                flex-col
+                justify-between
+              "
+            >
+              {/* Top */}
+              <div>
+                <div className="flex gap-4">
+                  <img
+                    src={r.avatar}
+                    className="w-14 h-14 rounded-full border border-cyan-400"
+                  />
 
-              <p className="text-gray-300 mt-4">{r.text}</p>
+                  <div className="flex-1">
+                    <div className="flex items-center gap-2">
+                      <h3 className="text-white font-bold">{r.name}</h3>
+                      {r.socials?.linkedin && (
+                        <a
+                          href={r.socials.linkedin}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-cyan-400 hover:text-cyan-300"
+                        >
+                          <Linkedin className="w-5 h-5" />
+                        </a>
+                      )}
+                    </div>
+                    <p className="text-sm text-gray-400">{r.company}</p>
+                  </div>
+
+                  <div className="flex">
+                    {Array.from({ length: r.rating }).map((_, i) => (
+                      <Star
+                        key={i}
+                        className="w-4 h-4 fill-yellow-400 text-yellow-400"
+                      />
+                    ))}
+                  </div>
+                </div>
+
+                {/* Review Text */}
+                <p className="text-sm text-gray-300 mt-4 line-clamp-4">
+                  {r.text}
+                </p>
+              </div>
             </Card>
           ))}
         </div>
