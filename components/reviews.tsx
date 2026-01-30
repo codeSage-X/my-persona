@@ -43,6 +43,17 @@ let MOCK_REVIEWS: any[] = [
       linkedin: "https://www.linkedin.com/in/babajide-awodire-927b6215b/",
     },
   },
+  {
+    id: 4,
+    name: "Kasper Apsega",
+    company: "Creative Project Manager @ Eskimi",
+    avatar: "/kas.png",
+    rating: 5,
+    text: "What stands out most about Wisdom is his attitude and determination. He works incredibly hard to improve his coding skills and never backs down from a tough problem. He is a resilient professional who brings 100% effort to the table every day. Was an absolute pleasure to have him on the team! ",
+    socials: {
+      linkedin: "https://www.linkedin.com/in/kasper-apsega-417196228/",
+    },
+  },
 ]
 
 export function Reviews() {
